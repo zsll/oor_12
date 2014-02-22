@@ -58,5 +58,8 @@ module D2s3
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    #http://stackoverflow.com/questions/9944089/how-to-configure-resque-on-heroku-with-rails-3-1-and-the-asset-pipeline
+    config.assets.initialize_on_precompile = false 
   end
 end
