@@ -1,7 +1,7 @@
 class ImageProcessor
   @queue = :image_processor
   def self.perform(upload_id)
-    sleep 7 #pretend to be busy
+    sleep 12 #pretend to be busy
     puts "About to reprocess img: " + upload_id.to_s
     upload = Upload.find(upload_id)
     
