@@ -25,4 +25,8 @@ class Upload < ActiveRecord::Base
       source.delete #delete temp file.
     end
   end
+  
+  def background_job_finished?
+    file.exists?(:large) && file.exists?(:tailored)
+  end
 end

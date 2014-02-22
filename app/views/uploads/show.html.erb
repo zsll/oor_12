@@ -1,8 +1,39 @@
+<script type="text/javascript">
+
+var check_background_interval_id = 0;
+
+$(document).ready(function() {
+	
+	function showImages(done) {
+		if(done) {
+			clearInterval(check_background_interval_id);	//Stop checkinging background job
+			$('.loading').html("<%= escape_javascript render('background_loaded') %>");
+		}
+	}
+
+	<% if !@upload.background_job_finished? %>
+		//Continue checking if background job is done
+		check_background_interval_id = setInterval(function(){
+	      $.get('/uploads/' + <%=@upload.id%> + '/check_background_job.json', function(data) {
+	        showImages(data.done)
+	      });
+	    }, 2000 );
+	<% else %>
+	    showImages(true);
+	<% end %>
+
+});
+</script>
+
 <p id="notice"><%= notice %></p>
 
+<h2>Resized uplodas processed by background worker:</h2>
+<div class="loading">
+	<%= image_tag asset_path("ajax_loader_gray_512.gif") %>
+</div>
+<h2>Original:</h2>
+<div class="original">
 <%= image_tag(@upload.file.url(:original)) %>
-<%= image_tag(@upload.file.url(:large)) %>
-<%= image_tag(@upload.file.url(:tailored)) %>
+<br>
 
-<%= link_to 'Edit', edit_upload_path(@upload) %> |
 <%= link_to 'Back', uploads_path %>

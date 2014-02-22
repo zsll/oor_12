@@ -11,6 +11,7 @@ gem 'pg'
 gem "paperclip", "~> 3.5.2"
 gem 's3_direct_upload'
 gem 'figaro'
+gem 'resque', '~> 1.19.0' # background jobs, 1.2.1 introduces "uninitialized constant Resque::Server (NameError)"
 
 # Gems used only for assets and not required
 # in production environments by default.

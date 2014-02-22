@@ -55,7 +55,8 @@ class UploadsController < ApplicationController
           paperclip_file_path = "uploads/files/#{@upload.id}/original/#{params[:upload][:file_file_name]}"
           Upload.copy_and_delete paperclip_file_path, raw_source, false #this is where we call a method to copy from temp location to where paperclip expects it to be.
          
-          @upload.file.reprocess!
+          #@upload.file.reprocess!
+          Resque.enqueue(ImageProcessor, @upload.id)
           
           format.html { redirect_to upload_path(:id => @upload.id), notice: 'upload was successfully created.' }
           format.json { render action: 'show', status: :created, location: @upload }
@@ -95,6 +96,21 @@ class UploadsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to uploads_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def check_background_job
+    @upload = Upload.find(params[:id])
+
+    ret = {}
+    if !@upload.background_job_finished?
+      ret[:done] = false
+    else
+      ret[:done] = true
+    end
+
+    respond_to do |format|
+      format.json { render :json => ret }
     end
   end
 end

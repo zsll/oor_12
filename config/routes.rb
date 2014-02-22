@@ -1,6 +1,9 @@
 D2s3::Application.routes.draw do
-  resources :uploads
-
+  resources :uploads do
+    member do
+      get 'check_background_job'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
