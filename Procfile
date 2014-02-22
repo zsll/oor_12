@@ -1,1 +1,1 @@
-resque: bundle exec rake resque:workers
+resque: bundle exec rake resque:workers QUEUE='*'
